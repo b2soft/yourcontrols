@@ -1,0 +1,644 @@
+# Version 1
+
+include:
+  - definitions/modules/Avionics/GTN750.yaml
+  - definitions/modules/physics.yaml
+  - definitions/modules/radios.yaml
+  - definitions/modules/rotorcraft.yaml
+  - definitions/modules/service.yaml
+  - definitions/modules/slew.yaml
+
+
+shared:
+- # YourControls Force Transfer Hotkey
+    type: ProgramActionEvent
+    event_name: TOGGLE_LAUNCH_BAR_SWITCH
+    action: TransferControls
+
+# Overhead CB 1
+- # BUS TIE COVER
+  type: var
+  var_name: L:H145_AA9D5E009791421C883FE96764069D06
+
+- # BUS TIE SWITCH
+  type: var
+  var_name: L:H145_A5D51CF32825498381DEF689D15FE7CC
+
+- # GEN
+  type: var
+  var_name: L:H145_A78B0471763846608934B5B143D17E17
+
+# Overhead CB 2
+- # GEN
+  type: var
+  var_name: L:H145_23DBA8E0E6D146E6BA5566AD8850E9DF
+
+- # BUS TIE COVER
+  type: var
+  var_name: L:H145_C7E065ADCBEA4614B12839A8B89E63E6
+
+- # BUS TIE SWITCH
+  type: var
+  var_name: L:H145_A63C63893E8442F19AD5FFB9A9AF9366
+
+- # EMER SHD BUS COVER
+  type: var
+  var_name: L:H145_2B3A4A5D135849FC9A8CB324D3D8F674
+
+- # EMER SHD BUS SWITCH
+  type: var
+  var_name: L:H145_940D774106EC418C98825ACCCA0388BA
+
+- # Cockpit Light
+  type: ToggleSwitch
+  var_name: A:LIGHT CABIN ON:3
+  var_units: Bool
+  var_type: bool
+  event_name: TOGGLE_CABIN_LIGHTS
+  event_param: 3
+  use_calculator: true
+
+# Overhead Switches
+# Row 1
+- # BAT MSTR
+  type: var
+  var_name: L:H145_60308BD7AA684C468DF20237B4701B17
+  
+- # TEST HYD
+  type: var
+  var_name: L:H145_A808A89B13E043F29E74E4E2BB30E27E
+
+- # TEST FIRE 1
+  type: var
+  var_name: L:H145_C7D4D159B1D0474BA81A2E0332C15D74
+
+- # TEST FIRE 2
+  type: var
+  var_name: L:H145_AB8D851DB3BC4222B6E0A78072F1D4FC
+  
+- # TEST LAMP
+  type: var
+  var_name: L:H145_FBD41B6E19844506B35C09C42C9B33F3
+
+- # DC RECEIPT
+  type: var
+  var_name: L:H145_6400309519224231AA2AAEA7B7E3FAE8
+
+- # STBY BAT
+  type: ToggleSwitch
+  var_name: A:ELECTRICAL MASTER BATTERY:2
+  var_units: Bool
+  var_type: bool
+  event_name: TOGGLE_MASTER_BATTERY
+  event_param: 2
+  use_calculator: true
+
+- # AVIO MSTR 1
+  type: NumSet
+  var_name: A:AVIONICS MASTER SWITCH:1
+  var_units: Bool
+  var_type: i32
+  event_name: AVIONICS_MASTER_1_SET
+
+- # AVIO MSTR 2
+  type: NumSet
+  var_name: A:AVIONICS MASTER SWITCH:2
+  var_units: Bool
+  var_type: i32
+  event_name: AVIONICS_MASTER_2_SET
+
+# Overhead
+# Row 2
+- # FUZZ BURN
+  type: var
+  var_name: L:H145_EE7B4B105D414821A9C1E4452BF1919C
+
+- # LAVCS
+  type: var
+  var_name: L:H145_1A623E5FF7BD4769AC4AF670A7AAF18E
+
+- # WIPER
+  type: var
+  var_name: L:H145_9289E590E5B14566BD4492490909F05C
+
+- # AIR COND
+  type: var
+  var_name: L:H145_29BD444B61EF4426AEB746DF43004044
+
+- # VENTILATION CKPT
+  type: var
+  var_name: L:H145_47AE63006EDC4D9E8AB02066B0367066
+
+- # VENTILATION PAX
+  type: var
+  var_name: L:H145_E9BCC0087C384294A402449996E5E339
+
+- # BLD HTG
+  type: var
+  var_name: L:H145_0C85F1EABE0A4BB79BC8D989B116086E
+
+# Overhead
+# Row 3
+- # PT/STATIC HTG COPILOT
+  type: NumSet
+  var_name: A:PITOT HEAT SWITCH:1
+  var_units: Bool
+  var_type: i32
+  event_name: PITOT_HEAT_SET
+  event_param: 1
+
+- # PT/STATIC HTG PILOT
+  type: NumSet
+  var_name: A:PITOT HEAT SWITCH:2
+  var_units: Bool
+  var_type: i32
+  event_name: PITOT_HEAT_SET
+  event_param: 2
+
+- # IBF 1
+  type: var
+  var_name: L:H145_5657853AE07B439DBBD2A72443F6D23D
+
+- # IBF 2
+  type: var
+  var_name: L:H145_E0029849C4AF42B2BAB980E083794F9F
+
+- # IBF RECALL
+  type: var
+  var_name: L:H145_A86C224FE6104D8E8DACB3A3BD8FBE02
+
+- # FUEL PRIME PUMP 1
+  type: ToggleSwitch
+  var_name: A:FUELSYSTEM PUMP SWITCH:2
+  var_units: Bool
+  var_type: bool
+  event_name: FUELSYSTEM_PUMP_TOGGLE
+  event_param: 2
+  use_calculator: true
+
+- # FUEL PRIME PUMP 2
+  type: ToggleSwitch
+  var_name: A:FUELSYSTEM PUMP SWITCH:3
+  var_units: Bool
+  var_type: bool
+  event_name: FUELSYSTEM_PUMP_TOGGLE
+  event_param: 3
+  use_calculator: true
+
+- # FUEL XFER PUMP F
+  type: ToggleSwitch
+  var_name: A:FUELSYSTEM PUMP SWITCH:1
+  var_units: Bool
+  var_type: bool
+  event_name: FUELSYSTEM_PUMP_TOGGLE
+  event_param: 1
+  use_calculator: true
+
+- # FUEL XFER PUMP A
+  type: ToggleSwitch
+  var_name: A:FUELSYSTEM PUMP SWITCH:4
+  var_units: Bool
+  var_type: bool
+  event_name: FUELSYSTEM_PUMP_TOGGLE
+  event_param: 4
+  use_calculator: true
+
+# Overhead
+# Row 4
+- # AUDIO TAWS
+  type: var
+  var_name: L:H145_3661446A68EC4F5A9FEC7206BCAFDD04
+
+- # EXT LIGHTS LANDING
+  type: ToggleSwitch
+  var_name: A:LIGHT LANDING
+  var_units: Bool
+  var_type: bool
+  event_name: LANDING_LIGHTS_TOGGLE
+  event_param: 1
+  use_calculator: true
+
+- # EXT LIGHTS STROBE
+  type: ToggleSwitch
+  var_name: A:LIGHT STROBE:1
+  var_units: Bool
+  var_type: bool
+  event_name: STROBES_TOGGLE
+  event_param: 0
+  use_calculator: true
+
+- # EXT LIGHTS POS
+  type: ToggleSwitch
+  var_name: A:LIGHT NAV
+  var_units: Bool
+  var_type: bool
+  event_name: TOGGLE_NAV_LIGHTS
+  event_param: 0
+  use_calculator: true
+
+- # EXT LIGHTS ACOL
+  type: ToggleSwitch
+  var_name: A:LIGHT BEACON:1
+  var_units: Bool
+  var_type: bool
+  event_name: TOGGLE_BEACON_LIGHTS
+  event_param: 1
+  use_calculator: true
+
+# Overhead
+# Row 5
+- # INT LIGHTS CARGO PAX
+  type: var
+  var_name: L:H145_CEB49558624D49F4A80663C347F0401A
+
+- # INT LIGHTS EM/EX
+  type: var
+  var_name: L:H145_BE239D2F815F464F93D0E46CC36DD73F
+
+- # INT LIGHTS INSTR KNOB
+  type: var
+  var_name: L:H145_AD2D901B65594859AD95D727B2CD0AA4
+
+- # INT LIGHTS INSTR DAY/NIGHT/NVG
+  type: var
+  var_name: L:H145_EE5BFC92AE1B4233874361BB524F9938
+
+- # INT LIGHTS Lamp
+  type: NumSet
+  var_name: A:LIGHT CABIN ON:2
+  var_units: Bool
+  var_type: i32
+  event_name: TOGGLE_CABIN_LIGHTS
+  event_param: 2
+
+# Warning Unit
+- # EMER OFF SW 1 Cover
+  type: var
+  var_name: L:H145_EE36E20F34C249DA8F6036E29D69601A
+
+- # EMER OFF SW 2 Cover
+  type: var
+  var_name: L:H145_86887AFA152F4BD3BC4BA305D8BAE41D
+
+# FMS Panel
+- # MKR
+  type: ToggleSwitch
+  var_name: A:MARKER BEACON SENSITIVITY HIGH
+  var_units: Bool
+  var_type: bool
+  event_name: MARKER_BEACON_SENSITIVITY_HIGH
+
+- # DME 1
+  type: var
+  var_name: L:H145_259A3B491DE24FE5B2AA7395F22362A0
+
+- # DME 2
+  type: var
+  var_name: L:H145_13293FBDD9564E1E82AE216B01C9350A
+
+- # FMS 1
+  type: ToggleSwitch
+  var_name: A:CIRCUIT SWITCH ON:7
+  var_units: Bool
+  var_type: bool
+  event_name: ELECTRICAL_CIRCUIT_TOGGLE
+  event_param: 7
+
+- # FMS 2
+  type: ToggleSwitch
+  var_name: A:CIRCUIT SWITCH ON:9
+  var_units: Bool
+  var_type: bool
+  event_name: ELECTRICAL_CIRCUIT_TOGGLE
+  event_param: 9
+
+# Engine Control Panel
+# ENG I
+- # Latch
+  type: var
+  var_name: L:H145_1DA4E74FE40148A6BB7AC35D5879502C
+
+- # Switch
+  type: var
+  var_name: L:H145_A458D298FB84431286EBA9ED00B6CE1D
+
+- # VENT
+  type: var
+  var_name: L:H145_215035F8E4E24E429B1D0FA982CCFA5C
+
+- # FADEC EMER Cover
+  type: var
+  var_name: L:H145_ED8BC62BB98B4C1B9E601361F749A592
+
+- # FADEC EMER Switch
+  type: var
+  var_name: L:H145_52A6AECA8E02405696C8C8CA74F4AE29
+
+# ENG II
+- # Latch
+  type: var
+  var_name: L:H145_C2A4091E175D4BDAA77ACD51B557C824
+
+- # Switch
+  type: var
+  var_name: L:H145_4AA7B52E5A1C4D5892565EE7FA1DCF04
+
+- # VENT
+  type: var
+  var_name: L:H145_3B1C9B8648534C899D125C92489FE2C1
+
+- # FADEC EMER Cover
+  type: var
+  var_name: L:H145_16EF021F1D7843FCAB2301CC09396437
+
+- # FADEC EMER Switch
+  type: var
+  var_name: L:H145_F765FD2E01724618B2709D6E684DE6B3
+
+# Central Console
+- # ELT
+  type: var
+  var_name: L:H145_CAFFC64A2BFF474CB2D79240F0CF71C3
+
+# APCP
+- # CRHT value
+  type: var
+  var_name: L:H145_D1A12741688E43B6A554659717BEAB37
+
+- # IAS value
+  type: var
+  var_name: L:H145_3584AC5EEDB84C32A7EADC89825FD3C6
+
+- # ALTA value
+  type: var
+  var_name: L:H145_EDDFE42A0F064914814F1F71D386C704
+
+- # VS/FPA value
+  type: var
+  var_name: L:H145_1CDC936435A14A0D9302BAF613895328
+
+- # Butterfly
+  type: var
+  var_name: L:H145_A2954E9E8B5A414C82D26032B132C964
+
+- # HDG/TRK value
+  type: var
+  var_name: L:H145_C2A769799618445EB928F6759B4FCC4E
+
+# ACU 6100 BECKER
+- # VHF 1
+  type: var
+  var_name: L:H145_EC2F072C5CB949A6A5BC61CC92117AA2
+
+- # VHF 2
+  type: var
+  var_name: L:H145_C2D3C339AB1A4B13A0AFDF64066A75C4
+
+- # TET 1
+  type: var
+  var_name: L:H145_BCE53815BCF146B4BE26EB17B446C8E1
+
+- # FM4m
+  type: var
+  var_name: L:H145_5E576B6C2CC346FF8C50B10F6565FC1D
+
+- # TET 2
+  type: var
+  var_name: L:H145_78D9A3828F7C4EDDA7A4DCE40A31BD9F
+
+- # SAT
+  type: var
+  var_name: L:H145_D862A84287BD4AEA8A2194311AE2867D
+
+- # GSM
+  type: var
+  var_name: L:H145_DF01B76F6D8548979094139DDEB52350
+
+- # FM2m
+  type: var
+  var_name: L:H145_8AD5024A9D2E4D1991046E2BFE16170A
+
+- # VOX
+  type: var
+  var_name: L:H145_DF0610AFF697495D8BD5F4CC5915693D
+
+- # TX
+  type: var
+  var_name: L:H145_BCFBFEF6F14F41BBACE6293F9EAF3B92
+
+- # NAV1
+  type: var
+  var_name: L:H145_C23B987422DF4F1FBCD270D7248D561A
+
+- # NAV2
+  type: var
+  var_name: L:H145_BF33BA09808244A089CBBAF5B6058801
+
+- # empty1
+  type: var
+  var_name: L:H145_4003F1A9C8AA4BD387B7E266DBA2608D
+
+- # MKR
+  type: var
+  var_name: L:H145_2383C5FBE3BD46B6ABCEC8A8D7784B44
+
+- # empty2
+  type: var
+  var_name: L:H145_A20A2549AE0B418C8D8BE8B95FB305A8
+
+- # DME1
+  type: var
+  var_name: L:H145_A88885EDFB0B499DB59B38FAA883DAC3
+
+- # DME2
+  type: var
+  var_name: L:H145_AEC1BD244BA944CFA27940F2B645B924
+
+- # empty3
+  type: var
+  var_name: L:H145_C81F8EEA8278404EB0A787F3508B3628
+
+# Radio
+- # On/Off
+  type: ToggleSwitch
+  var_name: A:CIRCUIT SWITCH ON:17
+  var_units: Bool
+  var_type: bool
+  event_name: ELECTRICAL_CIRCUIT_TOGGLE
+  event_param: 17
+
+# EURONAV
+- # Range knob
+  type: var
+  var_name: L:H145_B82179309D314C1494265FB599D1478FC
+
+# WXR
+- # Switch knob
+  type: var
+  var_name: L:H145_B7ABB4890EC7410890F4D129965DE62B
+
+- # Tilt knob
+  type: var
+  var_name: L:H145_5BA779B1AE47418598588C7E892BFED2
+
+# TFM-138B
+- # On/Off
+  type: ToggleSwitch
+  var_name: A:CIRCUIT SWITCH ON:16
+  var_units: Bool
+  var_type: bool
+  event_name: ELECTRICAL_CIRCUIT_TOGGLE
+  event_param: 16
+
+- # GND Radio Transmit Power
+  type: var
+  var_name: L:H145_C9BC782275C34E3FA49B9E644B4E7A51
+
+- # GND PWR
+  type: var
+  var_name: L:H145_EA9E95D78E1A44C9A7E37C4D9849ED8A
+
+- # PUSH FOR AIR
+  type: var
+  var_name: L:H145_5161706F78D5419C97AE3CABCF4EC1B5
+
+- # PUSH FOR DEFOG
+  type: var
+  var_name: L:H145_696E4D2066FD422BA09B726C119C8034
+
+# Data Transfer Device
+- # Cover
+  type: var
+  var_name: L:H145_C815529044E0474FA0CBE10C8A983B5D
+
+# system variables
+
+# master:
+  # - # Controls
+  #   type: NumSet
+  #   var_name: A:ELEVATOR POSITION
+  #   var_units: Position 16k
+  #   var_type: f64
+  #   event_name: AXIS_ELEVATOR_SET
+  #   interpolate: InvertConstant
+  # -
+  #   type: NumSet
+  #   var_name: A:AILERON POSITION
+  #   var_units: Position 16k
+  #   var_type: f64
+  #   event_name: AXIS_AILERONS_SET
+  #   interpolate: InvertConstant
+  # -
+  #   type: NumSet
+  #   var_name: A:RUDDER POSITION
+  #   var_units: Position 16k
+  #   var_type: f64
+  #   event_name: AXIS_RUDDER_SET
+  #   interpolate: InvertConstant
+  # -
+  #   type: NumSet
+  #   var_name: L:ROTOR_COLLECTIVE
+  #   var_type: f64
+  #   event_name: THROTTLE_AXIS_SET_EX1
+  #   multiply_by: 327.68
+  #   add_by: -16384
+  #   use_calculator: true
+  #   unreliable: true
+
+server:
+  -
+    type: var
+    var_name: A:FUEL TANK CENTER LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:FUEL TANK CENTER2 LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:FUEL TANK LEFT MAIN LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:FUEL TANK RIGHT MAIN LEVEL
+    var_units: Percent
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:1
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:2
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:3
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:4
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:5
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:6
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:7
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:8
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:9
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:10
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:11
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
+  -
+    type: var
+    var_name: A:PAYLOAD STATION WEIGHT:12
+    var_units: Pounds
+    var_type: f64
+    unreliable: true
