@@ -517,26 +517,32 @@ shared:
 - # Cockpit Left
   type: var
   var_name: L:H145_SC_DOOR_COCKPIT_L
+  cancel_h_events: true
 
 - # Cockpit Right
   type: var
   var_name: L:H145_SC_DOOR_COCKPIT_R
+  cancel_h_events: true
 
 - # Pax Left
   type: var
   var_name: L:H145_SC_DOOR_PAX_L
+  cancel_h_events: true
 
 - # Pax Right
   type: var
   var_name: L:H145_SC_DOOR_PAX_R
+  cancel_h_events: true
 
 - # Cargo Left
   type: var
   var_name: L:H145_SC_DOOR_CARGO_L
+  cancel_h_events: true
 
 - # Cargo Right
   type: var
   var_name: L:H145_SC_DOOR_CARGO_R
+  cancel_h_events: true
 
 # Server only setup
 server:
