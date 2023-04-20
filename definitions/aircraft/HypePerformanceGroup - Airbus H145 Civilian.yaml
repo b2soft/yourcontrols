@@ -319,7 +319,7 @@ shared:
 
 - # Switch
   type: var
-  var_name: L:H145_ECP_MAIN_1
+  var_name: L:H145_SC_ECP_MAIN_1
   cancel_h_events: true
 
 - # VENT
@@ -341,7 +341,7 @@ shared:
 
 - # Switch
   type: var
-  var_name: L:H145_ECP_MAIN_2
+  var_name: L:H145_SC_ECP_MAIN_2
   cancel_h_events: true
 
 - # VENT
