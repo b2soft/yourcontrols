@@ -8,7 +8,6 @@ include:
   - definitions/modules/service.yaml
   - definitions/modules/slew.yaml
 
-
 shared:
 - # YourControls Force Transfer Hotkey
     type: ProgramActionEvent
@@ -23,7 +22,7 @@ shared:
 - # BUS TIE SWITCH
   type: var
   var_name: L:H145_A5D51CF32825498381DEF689D15FE7CC
-
+ 
 - # GEN
   type: var
   var_name: L:H145_A78B0471763846608934B5B143D17E17
@@ -320,7 +319,8 @@ shared:
 
 - # Switch
   type: var
-  var_name: L:H145_A458D298FB84431286EBA9ED00B6CE1D
+  var_name: L:H145_ECP_MAIN_1
+  cancel_h_events: true
 
 - # VENT
   type: var
@@ -341,7 +341,8 @@ shared:
 
 - # Switch
   type: var
-  var_name: L:H145_4AA7B52E5A1C4D5892565EE7FA1DCF04
+  var_name: L:H145_ECP_MAIN_2
+  cancel_h_events: true
 
 - # VENT
   type: var
@@ -511,40 +512,33 @@ shared:
   type: var
   var_name: L:H145_C815529044E0474FA0CBE10C8A983B5D
 
-# system variables
+# EXTERIOR
+# Doors
+- # Cockpit Left
+  type: var
+  var_name: L:H145_SC_DOOR_COCKPIT_L
 
-# master:
-  # - # Controls
-  #   type: NumSet
-  #   var_name: A:ELEVATOR POSITION
-  #   var_units: Position 16k
-  #   var_type: f64
-  #   event_name: AXIS_ELEVATOR_SET
-  #   interpolate: InvertConstant
-  # -
-  #   type: NumSet
-  #   var_name: A:AILERON POSITION
-  #   var_units: Position 16k
-  #   var_type: f64
-  #   event_name: AXIS_AILERONS_SET
-  #   interpolate: InvertConstant
-  # -
-  #   type: NumSet
-  #   var_name: A:RUDDER POSITION
-  #   var_units: Position 16k
-  #   var_type: f64
-  #   event_name: AXIS_RUDDER_SET
-  #   interpolate: InvertConstant
-  # -
-  #   type: NumSet
-  #   var_name: L:ROTOR_COLLECTIVE
-  #   var_type: f64
-  #   event_name: THROTTLE_AXIS_SET_EX1
-  #   multiply_by: 327.68
-  #   add_by: -16384
-  #   use_calculator: true
-  #   unreliable: true
+- # Cockpit Right
+  type: var
+  var_name: L:H145_SC_DOOR_COCKPIT_R
 
+- # Pax Left
+  type: var
+  var_name: L:H145_SC_DOOR_PAX_L
+
+- # Pax Right
+  type: var
+  var_name: L:H145_SC_DOOR_PAX_R
+
+- # Cargo Left
+  type: var
+  var_name: L:H145_SC_DOOR_CARGO_L
+
+- # Cargo Right
+  type: var
+  var_name: L:H145_SC_DOOR_CARGO_R
+
+# Server only setup
 server:
   -
     type: var
