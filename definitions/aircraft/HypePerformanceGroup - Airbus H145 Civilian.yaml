@@ -107,6 +107,18 @@ shared:
 
 # Overhead
 # Row 2
+- # HOIST/CBL CUT
+  type: var
+  var_name: L:H145_596A302AD15347D7BEA30D1A3474FC20
+
+- # CARGO
+  type: var
+  var_name: L:H145_35B8EE2F7CBF48AC9C588E704F7EFBE3
+
+- # EMER FLOATS
+  type: var
+  var_name: L:H145_8BC3CAC01F48443192448F099B320FF2
+
 - # FUZZ BURN
   type: var
   var_name: L:H145_EE7B4B105D414821A9C1E4452BF1919C
@@ -206,6 +218,14 @@ shared:
 - # AUDIO TAWS
   type: var
   var_name: L:H145_3661446A68EC4F5A9FEC7206BCAFDD04
+
+- # AUDIO ACAS
+  type: var
+  var_name: L:H145_33B9B9976CA54FA3916A2B7B3B054144
+
+- # EXT LIGHTS HISL
+  type: var
+  var_name: L:H145_2735757F9D4C43AD9F5E60C56BE37654
 
 - # EXT LIGHTS LANDING
   type: ToggleSwitch
@@ -548,6 +568,39 @@ server:
   - # Debug H145 new SC vars
     type: var
     var_name: L:DEBUG_SHARED_COCKPIT
+
+# ACFT Config
+  - # ACAS
+    type: var
+    var_name: L:H145_PERSIST_ACAS_INSTALLED 
+
+  - # HTAWS
+    type: var
+    var_name: L:H145_PERSIST_HTAWS_INSTALLED 
+
+  - # IBF
+    type: var
+    var_name: L:H145_PERSIST_IBF_INSTALLED 
+
+  - # Pilots: Asobo Pilot
+    type: var
+    var_name: L:H145_PERSIST_USE_ASOBO_PILOT
+  
+  - # Pilot 0
+    type: var
+    var_name: L:H145_PERSIST_PILOT0
+
+  - # Pilot 1
+    type: var
+    var_name: L:H145_PERSIST_PILOT1 
+
+  - # Glareshields
+    type: var
+    name: H145_PERSIST_COCKPIT_FABRIC_GLARESHIELDS
+  
+  - # Sun visors
+    type: var
+    name: H145_PERSIST_COCKPIT_SUN_VISORS    
 
   -
     type: var
