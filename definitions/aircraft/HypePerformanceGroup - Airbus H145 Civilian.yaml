@@ -1,4 +1,4 @@
-# Version 2
+# Version 3
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -564,6 +564,53 @@ shared:
   var_name: L:H145_SC_DOOR_CARGO_R
   cancel_h_events: true
 
+- # External Power
+  type: ToggleSwitch
+  var_name: A:EXTERNAL POWER ON:1
+  var_units: Bool
+  var_type: bool
+  event_name: TOGGLE_EXTERNAL_POWER
+  event_param: 1
+
+- # DA MFD1
+  type: var
+  var_name: L:H145_986A3708AA80448A824E2E3521FA6738
+
+- # DH MFD1
+  type: var
+  var_name: L:H145_0FDCC07C3A464D53B40CDD92D59CB00D
+
+- # DA MFD2/4
+  type: var
+  var_name: L:H145_31511165F056426E94D549914103641E
+
+- # DH MFD2/4
+  type: var
+  var_name: L:H145_4C87D031F6654D97AB80FD447ED39BC0
+
+# BARO References
+- # MFD 1
+   type: NumSet
+   var_name: A:KOHLSMAN SETTING MB:1
+   var_units: Millibars scaler 16
+   var_type: f64
+   event_name: KOHLSMAN_SET
+   event_param: 1
+- # MFD 2/4
+   type: NumSet
+   var_name: A:KOHLSMAN SETTING MB:2
+   var_units: Millibars scaler 16
+   var_type: f64
+   event_name: KOHLSMAN_SET
+   event_param: 2
+- # Standby
+   type: NumSet
+   var_name: A:KOHLSMAN SETTING MB:3
+   var_units: Millibars scaler 16
+   var_type: f64
+   event_name: KOHLSMAN_SET
+   event_param: 3
+
 # Server only setup
 server:
   - # Debug H145 new SC vars
@@ -606,12 +653,6 @@ server:
   -
     type: var
     var_name: A:FUEL TANK CENTER LEVEL
-    var_units: Percent
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:FUEL TANK CENTER2 LEVEL
     var_units: Percent
     var_type: f64
     unreliable: true
@@ -663,85 +704,72 @@ server:
     var_units: Pounds
     var_type: f64
     unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:7
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:8
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:9
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:10
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:11
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
-  -
-    type: var
-    var_name: A:PAYLOAD STATION WEIGHT:12
-    var_units: Pounds
-    var_type: f64
-    unreliable: true
 
 master:
 # Controls (only animation to not interfer with AFCS)
   - # Collective
     type: NumSet
-    var_name: A:COLLECTIVE POSITION
+    var_name: L:COLLECTIVE
     var_units: Position 16k
     var_type: f64
-    # event_name: AXIS_COLLECTIVE_SET
-    # multiply_by: 327.68
-    # add_by: -16384
-    # use_calculator: true
+    event_name: AXIS_COLLECTIVE_SET
+    multiply_by: 16.384
+    use_calculator: true
     interpolate: InvertConstant
+    unreliable: true
 
   - # Cyclic X (Roll)
     type: NumSet
-    var_name: A:YOKE X POSITION
+    var_name: L:CYCLICX
     var_units: Position 16k
     var_type: f64
-    # event_name: AXIS_CYCLIC_LATERAL_SET
-    # multiply_by: 327.68
-    # add_by: -16384
-    # use_calculator: true
+    event_name: AXIS_CYCLIC_LATERAL_SET
+    multiply_by: 327.68
+    add_by: -16384
+    use_calculator: true
     interpolate: InvertConstant
+    unreliable: true
 
   - # Cyclic Y (Pitch)
     type: NumSet
-    var_name: A:YOKE Y POSITION
+    var_name: L:CYCLICY
     var_units: Position 16k
     var_type: f64
-    # event_name: AXIS_CYCLIC_LONGITUDINAL_SET
-    # multiply_by: 327.68
-    # add_by: -16384
-    # use_calculator: true
+    event_name: AXIS_CYCLIC_LONGITUDINAL_SET
+    multiply_by: 327.68
+    add_by: -16384
+    use_calculator: true
     interpolate: InvertConstant
+    unreliable: true
 
   - # Pedals (Yaw)
     type: NumSet
-    var_name: A:RUDDER PEDAL POSITION
+    var_name: A:TAIL ROTOR PEDAL POSITION
     var_units: Position 16k
     var_type: f64
-    #e vent_name: AXIS_STEERING_SET
-    # multiply_by: 327.68
-    # add_by: -16384
-    # use_calculator: true
+    event_name: AXIS_STEERING_SET
+    multiply_by: 327.68
+    add_by: -16384
+    use_calculator: true
     interpolate: InvertConstant
+    unreliable: true
+
+ignore:
+# Ignore all Helionix knobs but not knob push button
+# MFD1
+  - H145_D883E095DD894FA0B2F612D666A9F6E9C # Large CW
+  - H145_D883E095DD894FA0B2F612D666A9F6E9A # Large CCW
+  - H145_37327BDA3AA74313A089DFB03828AA05C # Small CW
+  - H145_37327BDA3AA74313A089DFB03828AA05A # Small CCW
+
+# MFD4
+  - H145_D883E095DD894FA0B2F612D666A9F6E9C # Large CW
+  - H145_D883E095DD894FA0B2F612D666A9F6E9A # Large CCW
+  - H145_37327BDA3AA74313A089DFB03828AA05C # Small CW
+  - H145_37327BDA3AA74313A089DFB03828AA05A # Small CCW
+
+# MFD2
+  - H145_21CFBBC765A544C8902B4CD1ED1C8E25C # Large CW
+  - H145_21CFBBC765A544C8902B4CD1ED1C8E25A # Large CCW
+  - H145_D90F27515D1F41E781CEB070FF34BB34C # Small CW
+  - H145_D90F27515D1F41E781CEB070FF34BB34A # Small CCW
