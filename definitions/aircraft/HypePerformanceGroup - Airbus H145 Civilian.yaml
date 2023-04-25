@@ -2,10 +2,9 @@
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
+  - definitions/modules/Avionics/TDSNXi.yaml
   - definitions/modules/physics.yaml
   - definitions/modules/radios.yaml
-  - definitions/modules/rotorcraft.yaml
-  - definitions/modules/service.yaml
   - definitions/modules/slew.yaml
 
 shared:
@@ -546,6 +545,10 @@ shared:
 
 # Server only setup
 server:
+  - # Debug H145 new SC vars
+    type: var
+    var_name: L:DEBUG_SHARED_COCKPIT
+
   -
     type: var
     var_name: A:FUEL TANK CENTER LEVEL
@@ -642,3 +645,49 @@ server:
     var_units: Pounds
     var_type: f64
     unreliable: true
+
+master:
+# Controls (only animation to not interfer with AFCS)
+  - # Collective
+    type: NumSet
+    var_name: A:COLLECTIVE POSITION
+    var_units: Position 16k
+    var_type: f64
+    # event_name: AXIS_COLLECTIVE_SET
+    # multiply_by: 327.68
+    # add_by: -16384
+    # use_calculator: true
+    interpolate: InvertConstant
+
+  - # Cyclic X (Roll)
+    type: NumSet
+    var_name: A:YOKE X POSITION
+    var_units: Position 16k
+    var_type: f64
+    # event_name: AXIS_CYCLIC_LATERAL_SET
+    # multiply_by: 327.68
+    # add_by: -16384
+    # use_calculator: true
+    interpolate: InvertConstant
+
+  - # Cyclic Y (Pitch)
+    type: NumSet
+    var_name: A:YOKE Y POSITION
+    var_units: Position 16k
+    var_type: f64
+    # event_name: AXIS_CYCLIC_LONGITUDINAL_SET
+    # multiply_by: 327.68
+    # add_by: -16384
+    # use_calculator: true
+    interpolate: InvertConstant
+
+  - # Pedals (Yaw)
+    type: NumSet
+    var_name: A:RUDDER PEDAL POSITION
+    var_units: Position 16k
+    var_type: f64
+    #e vent_name: AXIS_STEERING_SET
+    # multiply_by: 327.68
+    # add_by: -16384
+    # use_calculator: true
+    interpolate: InvertConstant
