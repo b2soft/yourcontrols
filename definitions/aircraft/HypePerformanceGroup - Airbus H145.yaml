@@ -1,4 +1,4 @@
-# Version 3
+# Version 4
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -6,6 +6,7 @@ include:
   - definitions/modules/physics.yaml
   - definitions/modules/radios.yaml
   - definitions/modules/slew.yaml
+  #- definitions/modules/hpg_missions.yaml
 
 shared:
 - # YourControls Force Transfer Hotkey
