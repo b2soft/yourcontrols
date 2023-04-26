@@ -1,3 +1,73 @@
 # Version 4
 
 shared:
+
+
+server:
+  -
+    type: var
+    var_name: L:CRASH_VARIABLE
+
+  -
+    type: var
+    var_name: L:MISSION_SCENE_TYPE
+
+  -
+    type: var
+    var_name: L:HELOVICTIMS
+  
+  -
+    type: var
+    var_name: L:MISSION_SHOW_HOIST_COMMAND
+
+  -
+    type: var
+    var_name: L:MISSION_GUIDANCE_ENABLED
+
+  -
+    type: var
+    var_name: L:HOIST_AUDIO
+
+  -
+    type: var
+    var_name: L:WAVING_CIVILIAN_STOP
+
+  -
+    type: var
+    var_name: L:DIFFICULTY       
+
+  -
+    type: var
+    var_name: L:CREW       
+
+  -
+    type: var
+    var_name: L:SECOND_HOIST  
+
+  -
+    type: var
+    var_name: L:H145_SDK_HOIST_OBJ_HUMAN_1_ON
+
+  -
+    type: var
+    var_name: L:H145_SDK_HOIST_OBJ_HUMAN_1_BAG_ON
+
+  -
+    type: var
+    var_name: L:HOIST_DISTANCE
+
+  -
+    type: var
+    var_name: L:H145_PERSIST_MISSION_WAIT_TIME
+
+  -
+    type: var
+    var_name: L:AMBULOAD
+
+  -
+    type: var
+    var_name: L:HOLDHOISTED
+
+  -
+    type: var
+    var_name: L:COPILOT
