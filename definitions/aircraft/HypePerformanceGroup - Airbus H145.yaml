@@ -10,9 +10,9 @@ include:
 
 shared:
 - # YourControls Force Transfer Hotkey
-    type: ProgramActionEvent
-    event_name: TOGGLE_LAUNCH_BAR_SWITCH
-    action: TransferControls
+  type: ProgramActionEvent
+  event_name: TOGGLE_LAUNCH_BAR_SWITCH
+  action: TransferControls
 
 # Overhead CB 1
 - # BUS TIE COVER
@@ -645,12 +645,12 @@ server:
 
   - # Glareshields
     type: var
-    name: H145_PERSIST_COCKPIT_FABRIC_GLARESHIELDS
+    var_name: L:H145_PERSIST_COCKPIT_FABRIC_GLARESHIELDS
   
   - # Sun visors
     type: var
-    name: H145_PERSIST_COCKPIT_SUN_VISORS    
-
+    var_name: L:H145_PERSIST_COCKPIT_SUN_VISORS
+    
   -
     type: var
     var_name: A:FUEL TANK CENTER LEVEL
