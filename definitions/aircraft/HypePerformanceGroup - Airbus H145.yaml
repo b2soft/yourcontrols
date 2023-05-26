@@ -1,4 +1,4 @@
-# Version 4
+# Version 5
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -6,7 +6,6 @@ include:
   - definitions/modules/physics.yaml
   - definitions/modules/radios.yaml
   - definitions/modules/slew.yaml
-  #- definitions/modules/hpg_missions.yaml
 
 shared:
 - # YourControls Force Transfer Hotkey
@@ -383,29 +382,41 @@ shared:
   var_name: L:H145_CAFFC64A2BFF474CB2D79240F0CF71C3
 
 # APCP
-- # CRHT value
+- # CRHT bug
   type: var
-  var_name: L:H145_D1A12741688E43B6A554659717BEAB37
+  var_name: L:H145_00254332927E4860B93D348B1E5A5E49
 
 - # IAS value
   type: var
-  var_name: L:H145_3584AC5EEDB84C32A7EADC89825FD3C6
+  var_name: L:H145_1E9F8B1CDF304B27819B7F8AF61C531D
 
-- # ALTA value
+- # FPA bug
   type: var
-  var_name: L:H145_EDDFE42A0F064914814F1F71D386C704
+  var_name: L:H145_474172366C614D01A497FDAA344D21AE
 
-- # VS/FPA value
+- # VS Bug
   type: var
-  var_name: L:H145_1CDC936435A14A0D9302BAF613895328
+  var_name: L:H145_BC991E5187584611AAED6C4920BBEAE6
+
+- # ALTA value SIM
+  type: NumSet
+  var_name: A:AUTOPILOT ALTITUDE LOCK VAR:3
+  var_units: Feet
+  var_type: i32
+  event_name: AP_ALT_VAR_SET_ENGLISH
+  cancel_h_events: true
+  event_param: 3
 
 - # Butterfly
   type: var
   var_name: L:H145_A2954E9E8B5A414C82D26032B132C964
 
-- # HDG/TRK value
-  type: var
-  var_name: L:H145_C2A769799618445EB928F6759B4FCC4E
+- # HDG/TRK bug SIM
+  type: NumSet
+  var_name: A:AUTOPILOT HEADING LOCK DIR
+  var_units: Degrees
+  var_type: f64
+  event_name: HEADING_BUG_SET
 
 # ACU 6100 BECKER
 - # VHF 1
@@ -565,6 +576,11 @@ shared:
   var_name: L:H145_SC_DOOR_CARGO_R
   cancel_h_events: true
 
+- # Hoist Length
+  type: var
+  var_name: L:H145_7A4024B86F4242CE898A036A229CB100
+  cancel_h_events: true
+
 - # External Power
   type: ToggleSwitch
   var_name: A:EXTERNAL POWER ON:1
@@ -572,6 +588,7 @@ shared:
   var_type: bool
   event_name: TOGGLE_EXTERNAL_POWER
   event_param: 1
+  use_calculator: true
 
 - # DA MFD1
   type: var
@@ -745,7 +762,7 @@ master:
 
   - # Pedals (Yaw)
     type: NumSet
-    var_name: A:TAIL ROTOR PEDAL POSITION
+    var_name: A:Pedals
     var_units: Position 16k
     var_type: f64
     event_name: AXIS_STEERING_SET
