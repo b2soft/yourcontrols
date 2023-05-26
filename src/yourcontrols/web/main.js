@@ -20,8 +20,9 @@ var sessionInput = document.getElementById("session-input");
 var name_input_join = document.getElementById("name-input-join");
 var theme_selector = document.getElementById("theme-select");
 var streamer_mode = document.getElementById("streamer-mode");
+var instructor_mode = document.getElementById("instructor-mode");
+var sound_muted = document.getElementById("sound-muted");
 
-var update_rate_input = document.getElementById("update-rate-input");
 var timeout_input = document.getElementById("timeout-input");
 
 var name_div = document.getElementById("name-div");
@@ -56,6 +57,7 @@ var networkLoss = document.getElementById("network-loss");
 var ping = document.getElementById("network-ping");
 
 var forceButton = document.getElementById("force-button");
+var observerButton = document.getElementById("observer-button");
 
 var is_connected = false;
 var is_client = false;
@@ -112,6 +114,7 @@ function FormButtonsDisabled(disabled) {
 function OnConnected() {
     connect_button.updatetext("danger", "Disconnect");
     server_button.updatetext("danger", "Stop Server");
+    observerButton.hidden = false;
 
     FormButtonsDisabled(false);
     is_connected = true;
@@ -170,6 +173,8 @@ function OnDisconnect(text) {
     joinIpInput.value = cacheIpInput;
     sessionInput.value = cacheSessionInput;
     forceButton.hidden = true;
+
+    observerButton.hidden = true;
 
     $("#session-id").hide()
     $("#external-ipv4").show();
@@ -241,10 +246,10 @@ function LoadSettings(newSettings) {
 
     joinIpInput.value = newSettings.ip;
     streamer_mode.checked = newSettings.streamer_mode;
+    instructor_mode.checked = newSettings.instructor_mode;
 
     username.value = newSettings.name;
     timeout_input.value = newSettings.conn_timeout;
-    update_rate_input.value = newSettings.update_rate;
     theme_selector.checked = newSettings.ui_dark_theme;
 
     setTheme(newSettings.ui_dark_theme);
@@ -330,10 +335,12 @@ function MessageReceived(data) {
         case "observing":
             rectangle_status.style.backgroundColor = "grey";
             forceButton.hidden = true;
+            observerButton.hidden = true;
             break;
         case "stop_observing":
             rectangle_status.style.backgroundColor = "red";
             forceButton.hidden = false;
+            observerButton.hidden = false;
             break;
         // Other client
         case "set_observing":
@@ -469,6 +476,13 @@ forceButton.addEventListener("click", function () {
     forceButton.hidden = true;
 });
 
+observerButton.addEventListener("click", function () {
+    invoke({
+        type: "goObserver",
+    });
+    observerButton.hidden = true;
+});
+
 $("input[type=radio][name=connectionRadios]").change(function () {
     $("#host-ip-radios").attr("hidden", $("#direct-radio").prop("checked"))
 })
@@ -482,11 +496,10 @@ $("#settings-form").submit(function (e) {
     newSettings.conn_timeout = ValidateInt(timeout_input)
         ? parseInt(timeout_input.value)
         : null;
-    newSettings.update_rate = ValidateInt(update_rate_input)
-        ? parseInt(update_rate_input.value)
-        : null;
     newSettings.ui_dark_theme = theme_selector.checked;
     newSettings.streamer_mode = streamer_mode.checked;
+    newSettings.instructor_mode = instructor_mode.checked;
+    newSettings.sound_muted = sound_muted.checked;
 
     for (key in newSettings) {
         if (newSettings[key] === null) {
@@ -502,8 +515,7 @@ $("#settings-form").submit(function (e) {
     });
 });
 
-$("#main-form-host").submit(function (e) {
-    e.preventDefault();
+$("#server-button").click(function (e) {
 
     if (is_connected) {
         invoke({
@@ -540,8 +552,7 @@ $("#main-form-host").submit(function (e) {
     });
 });
 
-$("#main-form-join").submit(function (e) {
-    e.preventDefault();
+$("#connect-button").click(function (e) {
 
     if (is_connected) {
         invoke({
@@ -619,7 +630,7 @@ aircraftList.addAircraft = function (aircraftName) {
     const newButton = document.createElement("option");
     newButton.className =
         "list-group-item list-group-item-action aircraft-list-entry themed";
-    newButton.innerHTML = aircraftName;
+    newButton.innerHTML = aircraftName.replace(".yaml", "");
     newButton.value = aircraftName;
 
     aircraftList.appendChild(newButton);

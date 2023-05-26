@@ -19,6 +19,8 @@ pub struct Config {
     pub name: String,
     pub ui_dark_theme: bool,
     pub streamer_mode: bool,
+    pub instructor_mode: bool,
+    pub sound_muted: bool,
 }
 
 impl Default for Config {
@@ -32,6 +34,8 @@ impl Default for Config {
             name: String::new(),
             ui_dark_theme: true,
             streamer_mode: false,
+            instructor_mode: false,
+            sound_muted: false,
         }
     }
 }

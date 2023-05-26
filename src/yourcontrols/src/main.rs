@@ -1,7 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-#![allow(unaligned_references)]
+#![allow(non_snake_case)]
 
 mod app;
+mod audio;
 mod clientmanager;
 mod corrector;
 mod definitions;
@@ -13,6 +14,7 @@ mod util;
 mod varreader;
 
 use app::{App, AppMessage, ConnectionMethod};
+use audio::AudioManager;
 use clientmanager::ClientManager;
 use definitions::{Definitions, ProgramAction, SyncPermission};
 use log::{error, info, warn};
@@ -31,6 +33,7 @@ use std::{
 };
 use update::Updater;
 use yourcontrols_net::{Client, Event, Payloads, ReceiveMessage, Server, TransferClient};
+use yourcontrols_types::AllNeedSync;
 
 use crate::util::get_hostname_ip;
 
@@ -46,7 +49,7 @@ const LOOP_SLEEP_TIME: Duration = Duration::from_millis(10);
 fn get_aircraft_configs() -> io::Result<Vec<String>> {
     let mut filenames = Vec::new();
 
-    for file in read_dir(&AIRCRAFT_DEFINITIONS_PATH)? {
+    for file in read_dir(AIRCRAFT_DEFINITIONS_PATH)? {
         let file = file?;
         filenames.push(
             file.path()
@@ -69,10 +72,6 @@ fn write_configuration(config: &Config) {
             e
         ),
     };
-}
-
-fn calculate_update_rate(update_rate: u16) -> f64 {
-    1.0 / update_rate as f64
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -114,12 +113,11 @@ fn start_client(
 }
 
 fn write_update_data(
-    definitions: &mut Definitions,
+    data: (Option<AllNeedSync>, Option<AllNeedSync>),
     client: &mut Box<dyn TransferClient>,
-    permission: &SyncPermission,
     log_sent: bool,
 ) {
-    let (unreliable, reliable) = definitions.get_need_sync(permission);
+    let (unreliable, reliable) = data;
 
     if let Some(data) = unreliable {
         client.update(data, true);
@@ -168,6 +166,12 @@ fn main() {
     let mut control = Control::new();
     let mut clients = ClientManager::new();
 
+    let mut audio = AudioManager::new();
+    if let Err(e) = audio.setup_stream() {
+        error!("[AUDIO] Could not initialize audio! Reason: {}", e);
+    }
+    audio.mute(config.sound_muted);
+
     let mut updater = Updater::new();
     let mut installer_spawned = false;
 
@@ -182,9 +186,6 @@ fn main() {
     let mut transfer_client: Option<Box<dyn TransferClient>> = None;
 
     // Update rate counter
-    let mut update_rate_instant = Instant::now();
-    let mut update_rate = calculate_update_rate(config.update_rate);
-
     let mut definitions = Definitions::new();
 
     let mut ready_to_process_data = false;
@@ -253,7 +254,9 @@ fn main() {
                     }
                     // Exception occured
                     DispatchResult::Exception(data) => {
-                        warn!("[SIM] SimConnect exception occurred: {}", data.dwException);
+                        warn!("[SIM] SimConnect exception occurred: {}", unsafe {
+                            std::ptr::addr_of!(data.dwException).read_unaligned()
+                        });
 
                         if data.dwException == 31 {
                             // Client data area was not initialized by the gauge
@@ -348,7 +351,7 @@ fn main() {
                         Payloads::PlayerJoined {
                             name,
                             in_control,
-                            is_observer,
+                            mut is_observer,
                             is_server,
                         } => {
                             info!(
@@ -364,6 +367,11 @@ fn main() {
                                     definitions.get_buffer_bytes().into_boxed_slice(),
                                     name.clone(),
                                 );
+
+                                if config.instructor_mode {
+                                    is_observer = true;
+                                    client.set_observer(name.clone(), true);
+                                }
                             }
 
                             app_interface.new_connection(&name);
@@ -484,6 +492,13 @@ fn main() {
                                 }
                             };
                         }
+                        Payloads::SetSelfObserver { name } => {
+                            if client.is_host() {
+                                clients.set_observer(&name, true);
+                                app_interface.set_observing(&name, true);
+                                client.set_observer(name, true);
+                            }
+                        }
                     },
                     ReceiveMessage::Event(e) => match e {
                         Event::ConnectionEstablished => {
@@ -512,6 +527,10 @@ fn main() {
                             clients.reset();
                             observing = false;
                             should_set_none_client = true;
+
+                            if let Err(e) = audio.play_disconnected() {
+                                warn!("[AUDIO] Error playing audio: {}", e);
+                            }
 
                             app_interface.client_fail(&reason);
                         }
@@ -557,33 +576,26 @@ fn main() {
                 }
             }
 
-            // Handle initial connection delay, allows lvars to be processed
-            if let Some(time) = connection_time {
-                if time.elapsed().as_secs() >= 3 {
-                    // Update
-                    let can_update = update_rate_instant.elapsed().as_secs_f64() > update_rate;
+            // Handle initial 3 second connection delay, allows lvars to be processed
+            if let Some(true) = connection_time.map(|t| t.elapsed().as_secs() >= 3) {
+                // Do not let server send initial data - wait for data to get cleared on the previous loop
+                if !observing && ready_to_process_data {
+                    let permission = SyncPermission {
+                        is_server: client.is_host(),
+                        is_master: control.has_control(),
+                        is_init: false,
+                    };
 
-                    // Do not let server send initial data - wait for data to get cleared on the previous loop
-                    if !observing && can_update && ready_to_process_data {
-                        let permission = SyncPermission {
-                            is_server: client.is_host(),
-                            is_master: control.has_control(),
-                            is_init: false,
-                        };
+                    write_update_data(definitions.get_sync(&permission), client, true);
+                }
 
-                        write_update_data(&mut definitions, client, &permission, true);
+                // Tell server we're ready to receive data after 3 seconds
+                if !ready_to_process_data {
+                    ready_to_process_data = true;
+                    definitions.reset_sync();
 
-                        update_rate_instant = Instant::now();
-                    }
-
-                    // Tell server we're ready to receive data after 3 seconds
-                    if !ready_to_process_data {
-                        ready_to_process_data = true;
-                        definitions.reset_sync();
-
-                        if !client.is_host() {
-                            client.send_ready();
-                        }
+                    if !client.is_host() {
+                        client.send_ready();
                     }
                 }
             }
@@ -738,6 +750,14 @@ fn main() {
                         client.set_observer(target, is_observer);
                     }
                 }
+                AppMessage::GoObserver => {
+                    if let Some(client) = transfer_client.as_ref() {
+                        if let Some(client_name) = clients.get_client_in_control() {
+                            // Requests server to set self as observer
+                            client.set_self_observer();
+                        }
+                    }
+                }
                 AppMessage::LoadAircraft { config_file_name } => {
                     // Load config
                     info!(
@@ -789,9 +809,8 @@ fn main() {
                         }
                     };
                 }
-                AppMessage::UpdateConfig { new_config } => {
-                    config = new_config;
-                    update_rate = calculate_update_rate(config.update_rate);
+                AppMessage::UpdateConfig { new_config: config } => {
+                    audio.mute(config.sound_muted);
                     write_configuration(&config);
                 }
                 AppMessage::ForceTakeControl => {
