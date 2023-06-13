@@ -1,4 +1,4 @@
-# Version 5
+# Version 6
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -631,10 +631,6 @@ shared:
 
 # Server only setup
 server:
-  - # Debug H145 new SC vars
-    type: var
-    var_name: L:DEBUG_SHARED_COCKPIT
-
 # ACFT Config
   - # ACAS
     type: var
@@ -731,7 +727,7 @@ master:
     var_units: Position 16k
     var_type: f64
     event_name: AXIS_COLLECTIVE_SET
-    multiply_by: 16.384
+    multiply_by: 163.84
     use_calculator: true
     interpolate: InvertConstant
     unreliable: true
