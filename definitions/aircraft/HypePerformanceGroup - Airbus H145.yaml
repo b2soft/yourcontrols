@@ -1,4 +1,4 @@
-# Version 6
+# Version 7
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -386,7 +386,7 @@ shared:
   type: var
   var_name: L:H145_00254332927E4860B93D348B1E5A5E49
 
-- # IAS value
+- # IAS bug
   type: var
   var_name: L:H145_1E9F8B1CDF304B27819B7F8AF61C531D
 
@@ -417,6 +417,82 @@ shared:
   var_units: Degrees
   var_type: f64
   event_name: HEADING_BUG_SET
+
+- # HDG Bug IsVisible
+  type: var
+  var_name: L:H145_4E1B5AD45D934F4D9ED3A65CB558B58D
+
+- # ALT Bug IsVisible
+  type: var
+  var_name: L:H145_0BC7059574DA4AD6B4AC587D70390EFE
+
+- # ALT Bug IsActive
+  type: var
+  var_name: L:H145_0EF13A454A2649E5A91558AEA7942909
+
+- # CRHT Bug IsVisible
+  type: var
+  var_name: L:H145_19C031C63B6A4C4C84D35CF28B46E1CA
+
+- # IAS Bug IsVisible
+  type: var
+  var_name: L:H145_2DC1B6E0BF64404E8122F7442587F765
+
+- # VS Bug IsVisible
+  type: var
+  var_name: L:H145_63A31B75DE6A47AFBD6EC764E54DB206
+
+# AFCS Modes
+
+- # ATRIM
+  type: var
+  var_name: L:H145_AD5EC75A95D245C59422D0D9F5664054
+  cancel_h_events: true
+
+- # AP1
+  type: var
+  var_name: L:H145_359B308E1FEC4A47853163040125EB54
+  cancel_h_events: true
+
+- # AP2
+  type: var
+  var_name: L:H145_00CA407F2809489188A85689C4B2701B
+  cancel_h_events: true
+
+- # BKUP
+  type: var
+  var_name: L:H145_55890A63B6384E30BBFC9192B4763E1D
+  cancel_h_events: true
+
+- # ALT
+  type: var
+  var_name: L:H145_F3EC7DEA40A944E3A5CB612BC37A31EA
+  cancel_h_events: true
+
+- # CRHT
+  type: var
+  var_name: L:H145_210D3FFB68C04C9A912D5A63DBA454E2
+  cancel_h_events: true
+
+- # VS
+  type: var
+  var_name: L:H145_075E8F9C308D425591C79237D0BC417D
+  cancel_h_events: true
+
+- # ALTA
+  type: var
+  var_name: L:H145_650CBBA5E8834B8E9E2A1382B42CAA23
+  cancel_h_events: true
+
+- # HDG
+  type: var
+  var_name: L:H145_6C7D42F7835447708459651FE95D756D
+  cancel_h_events: true
+
+- # IAS
+  type: var
+  var_name: L:H145_DA92ADC45A9F4454933F97D12B858441
+  cancel_h_events: true
 
 # ACU 6100 BECKER
 - # VHF 1
