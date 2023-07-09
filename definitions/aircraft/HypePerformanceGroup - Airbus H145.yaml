@@ -1,4 +1,4 @@
-# Version 7
+# Version 8
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -400,12 +400,10 @@ shared:
 
 - # ALTA value SIM
   type: NumSet
-  var_name: A:AUTOPILOT ALTITUDE LOCK VAR:3
+  var_name: A:AUTOPILOT ALTITUDE LOCK VAR
   var_units: Feet
   var_type: i32
   event_name: AP_ALT_VAR_SET_ENGLISH
-  cancel_h_events: true
-  event_param: 3
 
 - # Butterfly
   type: var
@@ -739,55 +737,62 @@ server:
   - # Sun visors
     type: var
     var_name: L:H145_PERSIST_COCKPIT_SUN_VISORS
-    
   -
     type: var
     var_name: A:FUEL TANK CENTER LEVEL
     var_units: Percent
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:FUEL TANK LEFT MAIN LEVEL
     var_units: Percent
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:FUEL TANK RIGHT MAIN LEVEL
     var_units: Percent
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:1
     var_units: Pounds
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:2
     var_units: Pounds
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:3
     var_units: Pounds
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:4
     var_units: Pounds
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:5
     var_units: Pounds
     var_type: f64
     unreliable: true
+
   -
     type: var
     var_name: A:PAYLOAD STATION WEIGHT:6
@@ -798,51 +803,20 @@ server:
 master:
 # Controls (only animation to not interfer with AFCS)
   - # Collective
-    type: NumSet
+    type: var
     var_name: L:COLLECTIVE
-    var_units: Position 16k
-    var_type: f64
-    event_name: AXIS_COLLECTIVE_SET
-    multiply_by: 163.84
-    use_calculator: true
-    interpolate: InvertConstant
-    unreliable: true
 
-  - # Cyclic X (Roll)
-    type: NumSet
+  - # Collective
+    type: var
     var_name: L:CYCLICX
-    var_units: Position 16k
-    var_type: f64
-    event_name: AXIS_CYCLIC_LATERAL_SET
-    multiply_by: 327.68
-    add_by: -16384
-    use_calculator: true
-    interpolate: InvertConstant
-    unreliable: true
 
   - # Cyclic Y (Pitch)
-    type: NumSet
+    type: var
     var_name: L:CYCLICY
-    var_units: Position 16k
-    var_type: f64
-    event_name: AXIS_CYCLIC_LONGITUDINAL_SET
-    multiply_by: 327.68
-    add_by: -16384
-    use_calculator: true
-    interpolate: InvertConstant
-    unreliable: true
 
   - # Pedals (Yaw)
-    type: NumSet
-    var_name: A:Pedals
-    var_units: Position 16k
-    var_type: f64
-    event_name: AXIS_STEERING_SET
-    multiply_by: 327.68
-    add_by: -16384
-    use_calculator: true
-    interpolate: InvertConstant
-    unreliable: true
+    type: var
+    var_name: L:PEDALS
 
 ignore:
 # Ignore all Helionix knobs but not knob push button
