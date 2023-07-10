@@ -1,4 +1,4 @@
-# Version 8
+# Version 9
 
 include:
   - definitions/modules/Avionics/GTN750.yaml
@@ -653,6 +653,16 @@ shared:
 - # Hoist Length
   type: var
   var_name: L:H145_7A4024B86F4242CE898A036A229CB100
+  cancel_h_events: true
+
+- # Search Light Y
+  type: var
+  var_name: L:H145_EDABDE0D52604EBDB9CDDA789B836E2F
+  cancel_h_events: true
+
+- # Search Light X
+  type: var
+  var_name: L:H145_2691D91685D249F8BE0CE0895A039455
   cancel_h_events: true
 
 - # External Power
